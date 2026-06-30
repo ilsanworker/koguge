@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>KOGUGE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<link rel="manifest" href="/manifest.json">
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#004ac6",
+        "on-primary": "#ffffff",
+        "primary-container": "#2563eb",
+        "on-primary-container": "#eeefff",
+        "primary-fixed": "#dbe1ff",
+        "primary-fixed-dim": "#b4c5ff",
+        "on-primary-fixed": "#00174b",
+        "on-primary-fixed-variant": "#003ea8",
+        "inverse-primary": "#b4c5ff",
+        "secondary": "#5c5f61",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#e0e3e5",
+        "on-secondary-container": "#626567",
+        "secondary-fixed": "#e0e3e5",
+        "secondary-fixed-dim": "#c4c7c9",
+        "on-secondary-fixed": "#191c1e",
+        "on-secondary-fixed-variant": "#444749",
+        "tertiary": "#4d556b",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#656d84",
+        "on-tertiary-container": "#eef0ff",
+        "tertiary-fixed": "#dae2fd",
+        "tertiary-fixed-dim": "#bec6e0",
+        "on-tertiary-fixed": "#131b2e",
+        "on-tertiary-fixed-variant": "#3f465c",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "background": "#f8f9ff",
+        "on-background": "#0b1c30",
+        "surface": "#f8f9ff",
+        "surface-dim": "#cbdbf5",
+        "surface-bright": "#f8f9ff",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#eff4ff",
+        "surface-container": "#e5eeff",
+        "surface-container-high": "#dce9ff",
+        "surface-container-highest": "#d3e4fe",
+        "surface-variant": "#d3e4fe",
+        "on-surface": "#0b1c30",
+        "on-surface-variant": "#434655",
+        "outline": "#737686",
+        "outline-variant": "#c3c6d7",
+        "inverse-surface": "#213145",
+        "inverse-on-surface": "#eaf1ff",
+        "surface-tint": "#0053db",
+      },
+      borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      spacing: {
+        "gutter": "16px", "xl": "32px", "sm": "12px", "margin-mobile": "20px",
+        "md": "16px", "margin-desktop": "40px", "base": "4px", "lg": "24px", "xs": "8px"
+      },
+      fontFamily: {
+        "body-lg": ["Inter"], "label-md": ["Inter"], "display": ["Inter"],
+        "headline-md": ["Inter"], "headline-lg-mobile": ["Inter"], "body-md": ["Inter"],
+        "headline-lg": ["Inter"], "hangul-display": ["Inter"]
+      },
+      fontSize: {
+        "body-lg": ["18px", {"lineHeight":"28px","fontWeight":"400"}],
+        "label-md": ["14px", {"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"500"}],
+        "display": ["40px", {"lineHeight":"48px","letterSpacing":"-0.02em","fontWeight":"700"}],
+        "headline-md": ["24px", {"lineHeight":"32px","fontWeight":"600"}],
+        "headline-lg-mobile": ["24px", {"lineHeight":"32px","fontWeight":"600"}],
+        "body-md": ["16px", {"lineHeight":"24px","fontWeight":"400"}],
+        "headline-lg": ["32px", {"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"600"}],
+        "hangul-display": ["48px", {"lineHeight":"60px","fontWeight":"500"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  html, body { height: 100%; }
+  body { background-color:#f8f9ff; font-family:'Inter',sans-serif; -webkit-tap-highlight-color:transparent; }
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .screen { display:none; min-height:100vh; min-height:100dvh; width:100%; }
+  .screen.active { display:flex; flex-direction:column; }
+
+  /* Onboarding */
+  .input-underline { position:relative; }
+  .input-underline::after {
+    content:''; position:absolute; bottom:0; left:50%; width:0; height:2px;
+    background:#004ac6; transition:all 0.3s ease; transform:translateX(-50%);
+  }
+  .input-underline:focus-within::after { width:100%; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .float-animation { animation:float 4s ease-in-out infinite; }
+
+  /* Cards */
+  .category-card {
+    transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    border:0.5px solid #e2e8f0;
+    box-shadow:0px 4px 12px rgba(0,0,0,0.03);
+  }
+  .category-card:hover { transform:translateY(-2px); box-shadow:0px 8px 16px rgba(0,0,0,0.05); }
+  .category-card:active { transform:scale(0.97); border-color:#2563eb; }
+  .bento-card { background:#fff; border:0.5px solid #E2E8F0; box-shadow:0px 4px 12px rgba(0,0,0,0.03); }
+
+  /* Word chips */
+  @keyframes bounce-subtle { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  .animate-bounce-subtle { animation:bounce-subtle 2s infinite ease-in-out; }
+  @keyframes chipIn { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+  .chip-anim { animation:chipIn 0.15s ease; }
+
+  /* Progress gradient */
+  .progress-gradient { background:linear-gradient(90deg,#004ac6 0%,#2563eb 100%); }
+
+  /* Confetti canvas */
+  .confetti-canvas { pointer-events:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:60; }
+
+  /* Feedback */
+  .feedback-visible { opacity:1!important; transform:translateY(0)!important; pointer-events:auto!important; }
+
+  /* Toast for "coming soon" nav items */
+  #toast {
+    position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: #213145; color: #fff; padding: 10px 18px; border-radius: 9999px;
+    font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none;
+    transition: all 0.3s ease; z-index: 70; white-space: nowrap;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:#d3e4fe; border-radius:10px; }
+</style>
+</head>
+<body class="text-on-background selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- ============================================================
+     SCREEN 1: ONBOARDING
+     ============================================================ -->
+<div id="screen-onboarding" class="screen active">
+  <main class="relative flex-1 w-full max-w-md mx-auto px-margin-mobile flex flex-col justify-between py-xl">
+    <div class="flex flex-col items-center text-center mt-xl">
+      <div class="mb-xl float-animation">
+        <div class="w-32 h-32 rounded-full bg-surface-container-high flex items-center justify-center relative overflow-hidden border border-outline-variant shadow-sm">
+          <span style="font-size:72px;line-height:1"></span>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+        </div>
+        <div class="mt-md">
+          <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Korean</span>
+        </div>
+      </div>
+      <div class="space-y-xs">
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">What's your name?</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant max-w-[280px] mx-auto">Let's personalize your learning experience.</p>
+      </div>
+    </div>
+
+    <div class="flex-grow flex flex-col justify-center w-full px-xs">
+      <div class="input-underline group">
+        <input autocomplete="off" id="nameInput"
+          class="w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-md text-center font-headline-md text-headline-md focus:ring-0 focus:border-transparent placeholder:text-outline/50 transition-all duration-300"
+          placeholder="Enter your name" type="text">
+      </div>
+      <div class="mt-md flex justify-center gap-xs opacity-0 transition-opacity duration-500" id="nameFeedback">
+        <span class="px-md py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary text-label-md font-label-md">Nice to meet you!</span>
+      </div>
+    </div>
+
+    <div class="pb-xl">
+      <button id="startBtn" disabled
+        class="w-full h-14 bg-primary text-on-primary rounded-xl font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-md shadow-lg active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:grayscale disabled:scale-100">
+        Get Started
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </button>
+      <p class="mt-md text-center font-label-md text-label-md text-outline">Step 1</p>
+    </div>
+  </main>
+  <div class="fixed inset-0 -z-10 opacity-30">
+    <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-surface-container-highest blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-20 w-80 h-80 rounded-full bg-primary-fixed blur-3xl opacity-40"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 2: DASHBOARD
+     ============================================================ -->
+<div id="screen-dashboard" class="screen">
+  <header class="fixed top-0 left-0 w-full z-40 bg-background h-16 flex items-center px-margin-mobile sm:px-margin-desktop max-w-7xl mx-auto justify-between right-0">
+    <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Koguge</span>
+    <div class="flex items-center gap-4">
+      <button class="hover:bg-surface-container-low p-2 rounded-full flex items-center justify-center" onclick="showToast('Search coming soon')">
+        <span class="material-symbols-outlined text-on-surface-variant">search</span>
+      </button>
+      <button class="p-1 rounded-full overflow-hidden border border-outline-variant" onclick="goTab('profile')">
+        <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-outline text-[20px]">account_circle</span>
+        </div>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 pt-24 pb-32 px-margin-mobile sm:px-margin-desktop max-w-2xl mx-auto w-full">
+    <section class="mb-xl">
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">Welcome, <span id="dashName">—</span>!</h1>
+      <p class="text-primary font-medium tracking-tight mt-1">Let's do our best today! 👋</p>
+    </section>
+
+    <section class="mb-lg bg-primary-container rounded-xl p-lg text-on-primary-container relative overflow-hidden">
+      <div class="relative z-10">
+        <div class="flex justify-between items-end mb-sm">
+          <div>
+            <span class="text-label-md font-label-md opacity-90 block">DAILY GOAL</span>
+            <span class="font-headline-md text-headline-md" id="xpDisplay">0/15 XP</span>
+          </div>
+          <span class="material-symbols-outlined text-4xl opacity-20">bolt</span>
+        </div>
+        <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+          <div class="bg-white h-full rounded-full transition-all duration-700" id="xpBar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+    </section>
+
+    <div class="space-y-md">
+      <div class="category-card w-full bg-surface-container-lowest rounded-xl p-lg flex items-center gap-lg cursor-pointer" onclick="openLesson('business')">
+        <div class="w-16 h-16 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-3xl">work</span>
+        </div>
+        <div class="flex-1">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-1">Business</h2>
+          <p class="text-on-surface-variant text-body-md">Master corporate etiquette and professional communication.</p>
+        </div>
+        <span class="material-symbols-outlined text-outline">chevron_right</span>
+      </div>
+
+      <div class="category-card w-full bg-surface-container-lowest rounded-xl p-lg flex items-center gap-lg cursor-pointer" onclick="openLesson('daily')">
+        <div class="w-16 h-16 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-3xl">forum</span>
+        </div>
+        <div class="flex-1">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-1">Daily Conversation</h2>
+          <p class="text-on-surface-variant text-body-md">Natural expressions for coffee shops, travel, and friends.</p>
+        </div>
+        <span class="material-symbols-outlined text-outline">chevron_right</span>
+      </div>
+
+      <div class="category-card w-full bg-surface-container-lowest rounded-xl p-lg flex items-center gap-lg cursor-pointer" onclick="openLesson('checkin')">
+        <div class="w-16 h-16 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-3xl">fact_check</span>
+        </div>
+        <div class="flex-1">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-1">Check-in</h2>
+          <p class="text-on-surface-variant text-body-md">Quick review of yesterday's tricky grammar and vocabulary.</p>
+        </div>
+        <span class="material-symbols-outlined text-outline">chevron_right</span>
+      </div>
+
+      <div class="category-card w-full bg-surface-container-lowest rounded-xl p-lg flex items-center gap-lg cursor-pointer" onclick="openLesson('slang')">
+        <div class="w-16 h-16 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-3xl">mood</span>
+        </div>
+        <div class="flex-1">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-1">Slang 😈</h2>
+          <p class="text-on-surface-variant text-body-md">Real Korean, casual & rude expressions.</p>
+        </div>
+        <span class="material-symbols-outlined text-outline">chevron_right</span>
+      </div>
+
+      <div class="category-card w-full bg-surface-container-lowest rounded-xl p-lg flex items-center gap-lg cursor-pointer" onclick="openBuilder()">
+        <div class="w-16 h-16 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-3xl">stadia_controller</span>
+        </div>
+        <div class="flex-1">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-1">Sentence Playground 🎮</h2>
+          <p class="text-on-surface-variant text-body-md">Pick any words, freely build your own sentence.</p>
+        </div>
+        <span class="material-symbols-outlined text-outline">chevron_right</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-md pt-4">
+        <div class="category-card bg-surface-container-low rounded-xl p-md aspect-square flex flex-col justify-between cursor-pointer" onclick="openLesson('idioms')">
+          <span class="material-symbols-outlined text-primary">translate</span>
+          <div>
+            <span class="block font-bold text-on-surface">Idioms</span>
+            <span class="text-sm text-on-surface-variant">5 New</span>
+          </div>
+        </div>
+        <div class="category-card bg-surface-container-low rounded-xl p-md aspect-square flex flex-col justify-between cursor-pointer" onclick="openLesson('script')">
+          <span class="material-symbols-outlined text-primary">history_edu</span>
+          <div>
+            <span class="block font-bold text-on-surface">Script</span>
+            <span class="text-sm text-on-surface-variant">Review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-lg rounded-t-xl flex justify-around items-center px-4 pt-2 pb-safe max-w-2xl mx-auto right-0" id="dashNav">
+    <a data-tab="home" class="nav-tab relative flex flex-col items-center justify-center gap-0.5 px-4 pb-2 pt-1 text-primary transition-colors duration-200" href="#" onclick="goTab('home');return false;">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">home</span>
+      <span class="font-label-md text-label-md">Home</span>
+      <span class="nav-indicator absolute -bottom-0.5 h-[3px] w-6 rounded-full bg-primary transition-opacity duration-200 opacity-100"></span>
+    </a>
+    <a data-tab="lessons" class="nav-tab relative flex flex-col items-center justify-center gap-0.5 px-4 pb-2 pt-1 text-on-surface-variant hover:text-primary transition-colors duration-200" href="#" onclick="goTab('lessons');return false;">
+      <span class="material-symbols-outlined">school</span>
+      <span class="font-label-md text-label-md">Lessons</span>
+      <span class="nav-indicator absolute -bottom-0.5 h-[3px] w-6 rounded-full bg-primary transition-opacity duration-200 opacity-0"></span>
+    </a>
+    <a data-tab="review" class="nav-tab relative flex flex-col items-center justify-center gap-0.5 px-4 pb-2 pt-1 text-on-surface-variant hover:text-primary transition-colors duration-200" href="#" onclick="goTab('review');return false;">
+      <span class="material-symbols-outlined">history</span>
+      <span class="font-label-md text-label-md">Review</span>
+      <span class="nav-indicator absolute -bottom-0.5 h-[3px] w-6 rounded-full bg-primary transition-opacity duration-200 opacity-0"></span>
+    </a>
+    <a data-tab="profile" class="nav-tab relative flex flex-col items-center justify-center gap-0.5 px-4 pb-2 pt-1 text-on-surface-variant hover:text-primary transition-colors duration-200" href="#" onclick="goTab('profile');return false;">
+      <span class="material-symbols-outlined">person</span>
+      <span class="font-label-md text-label-md">Profile</span>
+      <span class="nav-indicator absolute -bottom-0.5 h-[3px] w-6 rounded-full bg-primary transition-opacity duration-200 opacity-0"></span>
+    </a>
+  </nav>
+</div>
+
+<!-- ============================================================
+     SCREEN 3: LESSON (SENTENCE BUILDER)
+     ============================================================ -->
+<div id="screen-lesson" class="screen">
+  <header class="fixed top-0 left-0 w-full bg-background z-50">
+    <div class="flex justify-between items-center w-full px-margin-mobile sm:px-margin-desktop h-16 max-w-4xl mx-auto">
+      <div class="flex items-center gap-4">
+        <button onclick="showScreen('screen-dashboard')" class="hover:bg-surface-container-low p-2 rounded-full active:scale-95">
+          <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </button>
+        <h1 id="lessonTitle" class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Daily Conversation</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 pt-16 pb-24 px-margin-mobile sm:px-margin-desktop max-w-4xl mx-auto w-full flex flex-col h-screen overflow-hidden">
+    <div class="mb-sm shrink-0">
+      <div class="flex justify-between items-center mb-1 px-1">
+        <span id="lessonLevelLabel" class="text-label-md font-label-md text-outline">Level 3: Core Verbs</span>
+        <span id="lessonStepLabel" class="text-label-md font-label-md text-primary font-bold">1/4</span>
+      </div>
+      <div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+        <div id="lessonProgBar" class="h-full progress-gradient rounded-full transition-all duration-700 ease-out" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Prompt -->
+    <div class="mb-xs px-1 shrink-0">
+      <p class="text-label-md font-label-md text-outline uppercase tracking-wider mb-0.5">Translate into Korean</p>
+      <p id="promptText" class="font-headline-md text-headline-md text-on-surface leading-tight">—</p>
+    </div>
+
+    <!-- Sentence Preview Area -->
+    <section class="mb-sm shrink-0">
+      <div id="sentenceArea" class="w-full min-h-[72px] bg-surface-container-lowest border border-outline-variant rounded-xl px-md py-sm flex flex-wrap items-center justify-center gap-sm relative overflow-hidden shadow-sm">
+        <div class="flex flex-wrap gap-sm justify-center items-center z-10 w-full" id="sentencePreview">
+          <p class="text-on-surface-variant italic font-body-md text-body-md opacity-40" id="placeholderText">Tap words to build a sentence...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feedback -->
+    <section id="feedbackSection" class="mb-sm opacity-0 translate-y-4 transition-all duration-500 pointer-events-none shrink-0">
+      <div class="rounded-xl px-md py-sm border flex items-center gap-sm" id="feedbackCard">
+        <span class="material-symbols-outlined text-[20px]" id="feedbackIcon">check_circle</span>
+        <p class="font-body-md text-body-md font-semibold" id="feedbackText">—</p>
+      </div>
+    </section>
+
+    <!-- Word Chips -->
+    <section class="flex-1 min-h-0 flex flex-col">
+      <h2 class="text-label-md font-label-md text-on-surface-variant mb-xs uppercase tracking-wider shrink-0">Available Blocks</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-sm content-start overflow-y-auto" id="blocksGrid"></div>
+    </section>
+  </main>
+
+  <footer class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-lg rounded-t-xl overflow-hidden pb-safe">
+    <div class="max-w-4xl mx-auto p-3">
+      <button id="checkBtn" onclick="checkAnswer()" disabled
+        class="w-full bg-primary-container text-on-primary-container font-bold text-headline-md py-3 rounded-xl opacity-50 cursor-not-allowed transition-all duration-200 active:scale-95 flex justify-center items-center gap-2">
+        CHECK
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     SCREEN 3b: SENTENCE PLAYGROUND (FREE BUILDER GAME)
+     ============================================================ -->
+<div id="screen-builder" class="screen">
+  <header class="fixed top-0 left-0 w-full bg-background z-50">
+    <div class="flex justify-between items-center w-full px-margin-mobile sm:px-margin-desktop h-16 max-w-4xl mx-auto">
+      <div class="flex items-center gap-4">
+        <button onclick="showScreen('screen-dashboard')" class="hover:bg-surface-container-low p-2 rounded-full active:scale-95">
+          <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </button>
+        <h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Sentence Playground</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1 bg-primary-container/15 text-primary px-3 py-1 rounded-full">
+          <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">bolt</span>
+          <span class="font-bold text-sm" id="builderScore">0</span>
+        </div>
+        <button onclick="clearBuilder()" class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container-low active:scale-95" title="Restart round">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 pt-16 pb-24 px-margin-mobile sm:px-margin-desktop max-w-4xl mx-auto w-full flex flex-col h-screen overflow-hidden">
+    <div class="mb-sm shrink-0 mt-sm flex items-center justify-between px-1">
+      <span class="text-label-md font-label-md text-outline" id="builderRoundLabel">Round 1</span>
+      <div class="flex items-center gap-1.5 bg-primary text-on-primary px-3 py-1.5 rounded-full" id="builderRoleChip">
+        <span class="material-symbols-outlined text-[18px]" id="builderRoleIcon">person</span>
+        <span class="text-sm font-bold" id="builderRoleLabel">Pick a SUBJECT (주어)</span>
+      </div>
+    </div>
+
+    <!-- Sentence Preview Area -->
+    <section class="mb-sm shrink-0">
+      <div id="builderSentenceArea" class="w-full min-h-[64px] bg-surface-container-lowest border border-outline-variant rounded-xl px-md py-sm flex flex-wrap items-center justify-center gap-sm relative overflow-hidden shadow-sm">
+        <div class="flex flex-wrap gap-sm justify-center items-center z-10 w-full" id="builderSentencePreview">
+          <p class="text-on-surface-variant italic font-body-md text-body-md opacity-40">Build your sentence step by step...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Translation / interpretation panel -->
+    <section class="mb-sm shrink-0">
+      <div class="w-full bg-primary-container/10 border border-primary-container/20 rounded-xl px-md py-sm">
+        <p class="text-[11px] font-label-md text-primary uppercase tracking-wider mb-0.5">Your sentence & literal meaning</p>
+        <p id="builderRomanization" class="text-on-surface-variant italic text-[13px] leading-snug">—</p>
+        <p id="builderTranslation" class="text-on-surface font-semibold text-body-md leading-snug">Build a sentence to see its meaning here.</p>
+      </div>
+    </section>
+
+    <!-- Word bank -->
+    <section class="flex-1 min-h-0 flex flex-col">
+      <h2 class="text-label-md font-label-md text-on-surface-variant mb-xs uppercase tracking-wider shrink-0">Word Bank — tap a matching word</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-sm content-start overflow-y-auto" id="builderGrid"></div>
+    </section>
+  </main>
+</div>
+
+<!-- ============================================================
+     SCREEN 4: LESSON COMPLETE
+     ============================================================ -->
+<div id="screen-complete" class="screen">
+  <header class="bg-background fixed top-0 w-full z-40 h-16 flex items-center justify-between px-margin-mobile sm:px-margin-desktop max-w-7xl mx-auto right-0">
+    <div class="flex items-center gap-xs">
+      <button onclick="showScreen('screen-dashboard')" class="flex items-center gap-xs">
+        <span class="material-symbols-outlined text-primary font-bold">arrow_back</span>
+        <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Korean</span>
+      </button>
+    </div>
+    <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+      <span class="material-symbols-outlined text-outline">account_circle</span>
+    </div>
+  </header>
+
+  <main class="flex-1 pt-16 pb-36 px-margin-mobile flex flex-col max-w-lg mx-auto w-full">
+    <section class="relative py-xl flex flex-col items-center justify-center text-center">
+      <div class="z-10 relative">
+        <div class="w-24 h-24 bg-primary-container rounded-full flex items-center justify-center mb-md mx-auto shadow-lg animate-bounce">
+          <span class="material-symbols-outlined text-on-primary-container text-[48px]" style="font-variation-settings:'FILL' 1">check_circle</span>
+        </div>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background mb-xs">Lesson Complete!</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">You're making incredible progress. Flow on!</p>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-2 gap-sm mb-xl">
+      <div class="bento-card p-md rounded-xl flex flex-col items-center justify-center">
+        <span class="material-symbols-outlined text-primary mb-xs" style="font-variation-settings:'FILL' 1">target</span>
+        <span class="font-label-md text-label-md text-on-surface-variant">Accuracy</span>
+        <span class="font-display text-display text-primary" id="finalAccuracy">—</span>
+      </div>
+      <div class="bento-card p-md rounded-xl flex flex-col items-center justify-center">
+        <span class="material-symbols-outlined text-primary mb-xs">timer</span>
+        <span class="font-label-md text-label-md text-on-surface-variant">Time</span>
+        <span class="font-display text-display text-primary" id="finalTime">—</span>
+      </div>
+      <div class="bento-card col-span-2 p-md rounded-xl flex items-center justify-between">
+        <div class="flex items-center gap-sm">
+          <div class="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">bolt</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-label-md text-label-md text-on-surface-variant">Experience Earned</span>
+            <span class="font-headline-md text-headline-md font-bold text-on-background" id="finalXP">+0 XP</span>
+          </div>
+        </div>
+        <div class="flex-grow max-w-[100px] h-2 bg-secondary-container rounded-full ml-lg relative overflow-hidden">
+          <div id="xpCompFill" class="absolute inset-y-0 left-0 bg-primary-container rounded-full transition-all duration-1000 delay-500" style="width:0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-xl">
+      <h2 class="font-headline-md text-headline-md mb-md text-on-background px-base">Session Recap</h2>
+      <div class="space-y-sm" id="recapList"></div>
+    </section>
+  </main>
+
+  <footer class="fixed bottom-0 left-0 w-full bg-surface-container-lowest px-margin-mobile py-md flex flex-col gap-sm z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+    <div class="max-w-lg mx-auto w-full flex flex-col gap-sm">
+      <button onclick="showScreen('screen-dashboard')" class="w-full bg-primary-container text-on-primary-container py-md rounded-xl font-headline-md transition-all active:scale-95 flex items-center justify-center gap-xs">
+        Continue
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </button>
+      <button onclick="replayLesson()" class="w-full bg-surface border-2 border-outline-variant text-on-surface-variant py-md rounded-xl font-label-md font-bold uppercase transition-all hover:bg-surface-container-low active:opacity-80">
+        Review Lesson
+      </button>
+    </div>
+  </footer>
+</div>
+
+<div id="toast"></div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ── STATE (in-memory only; no browser storage is used by design) ──
+const S = {
+  name: '', xp: 0,
+  lessonType: null, steps: [], stepIdx: 0,
+  correct: 0, placed: [], startTime: 0,
+  recapItems: []
+};
+
+// ── LESSON DATA ────────────────────────────────────────────────
+// Each word block: k = Hangul, r = romanized pronunciation, e = English meaning
+const LESSONS = {
+  daily: {
+    title: 'Daily Conversation', level: 'Level 3: Core Verbs',
+    steps: [
+      { prompt: 'I go to school.', answer: ['저는','학교에','가요'],
+        bank: [{k:'저는',r:'jeoneun',e:'I'},{k:'사과를',r:'sagwareul',e:'Apple'},{k:'먹어요',r:'meogeoyo',e:'Eat'},{k:'학생은',r:'haksaengeun',e:'Student'},{k:'학교에',r:'hakgyoe',e:'School'},{k:'가요',r:'gayo',e:'Go'}] },
+      { prompt: 'I eat an apple.', answer: ['저는','사과를','먹어요'],
+        bank: [{k:'저는',r:'jeoneun',e:'I'},{k:'사과를',r:'sagwareul',e:'Apple'},{k:'먹어요',r:'meogeoyo',e:'Eat'},{k:'학교에',r:'hakgyoe',e:'School'},{k:'가요',r:'gayo',e:'Go'}] },
+      { prompt: 'Hello! (formal)', answer: ['안녕하세요'],
+        bank: [{k:'안녕하세요',r:'annyeonghaseyo',e:'Hello'},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'},{k:'괜찮아요',r:'gwaenchanayo',e:"It's okay"},{k:'죄송합니다',r:'joesonghamnida',e:'Sorry'}] },
+      { prompt: 'Thank you.', answer: ['감사합니다'],
+        bank: [{k:'감사합니다',r:'gamsahamnida',e:'Thank you'},{k:'안녕하세요',r:'annyeonghaseyo',e:'Hello'},{k:'죄송합니다',r:'joesonghamnida',e:'Sorry'},{k:'괜찮아요',r:'gwaenchanayo',e:'Fine'}] },
+    ]
+  },
+  business: {
+    title: 'Business', level: 'Level 1: Greetings',
+    steps: [
+      { prompt: 'Nice to meet you. (formal)', answer: ['만나서','반갑습니다'],
+        bank: [{k:'만나서',r:'mannaseo',e:'To meet'},{k:'반갑습니다',r:'bangapseumnida',e:'Pleased'},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'},{k:'죄송합니다',r:'joesonghamnida',e:'Sorry'}] },
+      { prompt: 'I understand.', answer: ['알겠습니다'],
+        bank: [{k:'알겠습니다',r:'algesseumnida',e:'Understood'},{k:'모르겠습니다',r:'moreugesseumnida',e:"I don't know"},{k:'괜찮습니다',r:'gwaenchanseumnida',e:"It's fine"},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'}] },
+      { prompt: 'Please wait a moment.', answer: ['잠시만','기다려주세요'],
+        bank: [{k:'잠시만',r:'jamsiman',e:'A moment'},{k:'기다려주세요',r:'gidaryeojuseyo',e:'Please wait'},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'},{k:'알겠습니다',r:'algesseumnida',e:'Understood'}] },
+    ]
+  },
+  checkin: {
+    title: 'Check-in', level: 'Review Session',
+    steps: [
+      { prompt: "I'm sorry. (formal)", answer: ['죄송합니다'],
+        bank: [{k:'죄송합니다',r:'joesonghamnida',e:"I'm sorry"},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'},{k:'안녕하세요',r:'annyeonghaseyo',e:'Hello'},{k:'알겠습니다',r:'algesseumnida',e:'I understand'}] },
+      { prompt: "It's okay / I'm fine.", answer: ['괜찮아요'],
+        bank: [{k:'괜찮아요',r:'gwaenchanayo',e:"I'm fine"},{k:'알겠습니다',r:'algesseumnida',e:'I understand'},{k:'모르겠습니다',r:'moreugesseumnida',e:"I don't know"},{k:'반갑습니다',r:'bangapseumnida',e:'Nice to meet you'}] },
+      { prompt: "I don't know.", answer: ['모르겠습니다'],
+        bank: [{k:'모르겠습니다',r:'moreugesseumnida',e:"I don't know"},{k:'알겠습니다',r:'algesseumnida',e:'I understand'},{k:'죄송합니다',r:'joesonghamnida',e:'Sorry'},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'}] },
+    ]
+  },
+  slang: {
+    title: 'Slang & Real Talk', level: 'Level ???: Street Mode 😈',
+    steps: [
+      { prompt: 'I want to go home', answer: ['집','가고','싶다'],
+        bank: [{k:'집',r:'jip',e:'Home'},{k:'가고',r:'gago',e:'Go'},{k:'싶다',r:'sipda',e:'Want'},{k:'먹고',r:'meokgo',e:'Eat'},{k:'학교',r:'hakgyo',e:'School'}] },
+      { prompt: 'This is f***ing good', answer: ['존나','좋다'],
+        bank: [{k:'존나',r:'jonna',e:"F***ing (very)"},{k:'좋다',r:'jota',e:'Good'},{k:'나쁘다',r:'nappeuda',e:'Bad'},{k:'조용히',r:'joyonghi',e:'Quietly'}] },
+      { prompt: 'That bastard', answer: ['이새끼'],
+        bank: [{k:'이새끼',r:'i saekki',e:'That bastard'},{k:'친구',r:'chingu',e:'Friend'},{k:'사람',r:'saram',e:'Person'}] },
+      { prompt: 'Damn / F***', answer: ['시발'],
+        bank: [{k:'시발',r:'sibal',e:'F***'},{k:'감사합니다',r:'gamsahamnida',e:'Thank you'},{k:'안녕하세요',r:'annyeonghaseyo',e:'Hello'}] },
+      { prompt: 'Pretty older girl', answer: ['예쁜','누나'],
+        bank: [{k:'예쁜',r:'yeppeun',e:'Pretty'},{k:'누나',r:'nuna',e:'Older sister (female)'},{k:'형',r:'hyeong',e:'Older brother'},{k:'친구',r:'chingu',e:'Friend'}] }
+    ]
+  },
+  idioms: {
+    title: 'Idioms', level: 'Level 1: Expressions',
+    steps: [
+      { prompt: "It's very easy. (lit: easy as eating rice cake)", answer: ['식은','죽','먹기'],
+        bank: [{k:'식은',r:'sigeun',e:'Cooled'},{k:'죽',r:'juk',e:'Porridge'},{k:'먹기',r:'meokgi',e:'Eating'},{k:'어려워요',r:'eoryeowoyo',e:'Difficult'}] },
+    ]
+  },
+  script: {
+    title: 'Script', level: 'Hangul Review',
+    steps: [
+      { prompt: 'The weather is good.', answer: ['날씨가','좋습니다'],
+        bank: [{k:'날씨가',r:'nalssiga',e:'Weather'},{k:'좋습니다',r:'joseumnida',e:'Is good'},{k:'나쁩니다',r:'nappeumnida',e:'Is bad'},{k:'맑아요',r:'malgayo',e:'Sunny'}] },
+    ]
+  }
+};
+
+// ── FREE-PLAY WORD POOL (for the Sentence Playground game) ──────
+// A large mixed bag of words players can freely combine, in any order.
+const WORD_POOL = [
+  {k:'저는',r:'jeoneun',e:'I',type:'subject'},
+  {k:'당신은',r:'dangsineun',e:'you',type:'subject'},
+  {k:'우리는',r:'urineun',e:'we',type:'subject'},
+  {k:'친구',r:'chingu',e:'friend',type:'noun'},
+  {k:'학교',r:'hakgyo',e:'school',type:'noun'},
+  {k:'집',r:'jip',e:'home',type:'noun'},
+  {k:'커피',r:'keopi',e:'coffee',type:'noun'},
+  {k:'사과',r:'sagwa',e:'apple',type:'noun'},
+  {k:'음식',r:'eumsik',e:'food',type:'noun'},
+  {k:'한국',r:'hanguk',e:'Korea',type:'noun'},
+  {k:'오늘',r:'oneul',e:'today',type:'adverb'},
+  {k:'내일',r:'naeil',e:'tomorrow',type:'adverb'},
+  {k:'먹어요',r:'meogeoyo',e:'eat',type:'verb'},
+  {k:'가요',r:'gayo',e:'go',type:'verb'},
+  {k:'와요',r:'wayo',e:'come',type:'verb'},
+  {k:'좋아해요',r:'joahaeyo',e:'like',type:'verb'},
+  {k:'사랑해요',r:'saranghaeyo',e:'love',type:'verb'},
+  {k:'마셔요',r:'masyeoyo',e:'drink',type:'verb'},
+  {k:'봐요',r:'bwayo',e:'see/watch',type:'verb'},
+  {k:'알아요',r:'arayo',e:'know',type:'verb'},
+  {k:'예뻐요',r:'yeppeoyo',e:'pretty',type:'adjective'},
+  {k:'좋아요',r:'joayo',e:'good',type:'adjective'},
+  {k:'행복해요',r:'haengbokhaeyo',e:'happy',type:'adjective'},
+  {k:'맛있어요',r:'masisseoyo',e:'delicious',type:'adjective'},
+  {k:'빨리',r:'ppalli',e:'quickly',type:'adverb'},
+  {k:'천천히',r:'cheoncheonhi',e:'slowly',type:'adverb'},
+  {k:'아주',r:'aju',e:'very',type:'adverb'},
+  {k:'안녕하세요',r:'annyeonghaseyo',e:'hello',type:'extra'},
+  {k:'감사합니다',r:'gamsahamnida',e:'thank you',type:'extra'},
+  {k:'네',r:'ne',e:'yes',type:'extra'},
+  {k:'아니요',r:'aniyo',e:'no',type:'extra'},
+  {k:'왜냐하면',r:'waenyahamyeon',e:'because',type:'extra'},
+  {k:'그리고',r:'geurigo',e:'and',type:'extra'},
+];
+
+// Role labels shown in the game UI
+const ROLE_LABELS = {
+  subject:   { ko: '주어',   en: 'Subject',   icon: 'person' },
+  noun:      { ko: '명사',   en: 'Noun',      icon: 'inventory_2' },
+  verb:      { ko: '동사',   en: 'Verb',      icon: 'directions_run' },
+  adjective: { ko: '형용사', en: 'Adjective', icon: 'auto_awesome' },
+  adverb:    { ko: '부사',   en: 'Adverb',    icon: 'speed' },
+};
+
+// Each round asks the player to pick words in this grammatical order
+// (mirrors natural Korean Subject → Object/Adjective → Verb word order)
+const ROUND_TEMPLATES = [
+  ['subject', 'noun', 'verb'],
+  ['subject', 'adjective'],
+  ['subject', 'adverb', 'verb'],
+  ['subject', 'noun', 'verb'],
+  ['subject', 'adverb', 'adjective'],
+];
+
+// ── NAVIGATION ─────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// Bottom nav tab handling (Home / Lessons / Review / Profile)
+function goTab(tab) {
+  document.querySelectorAll('#dashNav .nav-tab').forEach(a => {
+    const active = a.dataset.tab === tab;
+    a.classList.toggle('text-primary', active);
+    a.classList.toggle('text-on-surface-variant', !active);
+    const icon = a.querySelector('.material-symbols-outlined');
+    icon.style.fontVariationSettings = active ? "'FILL' 1" : "'FILL' 0";
+    const indicator = a.querySelector('.nav-indicator');
+    if (indicator) indicator.classList.toggle('opacity-100', active);
+    if (indicator) indicator.classList.toggle('opacity-0', !active);
+  });
+  showScreen('screen-dashboard');
+  if (tab === 'home') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (tab === 'lessons') {
+    showToast('More lessons coming soon ✨');
+    document.querySelector('main .space-y-md')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else if (tab === 'review') {
+    showToast('Review hub coming soon 📚');
+  } else if (tab === 'profile') {
+    showToast(S.name ? `Hi ${S.name}! Profile coming soon 👤` : 'Profile coming soon 👤');
+  }
+}
+
+// ── ONBOARDING ─────────────────────────────────────────────────
+const nameInput = document.getElementById('nameInput');
+const startBtn  = document.getElementById('startBtn');
+const nameFeedback = document.getElementById('nameFeedback');
+
+nameInput.addEventListener('input', e => {
+  const v = e.target.value.trim();
+  startBtn.disabled = !v;
+  nameFeedback.classList.toggle('opacity-0', !v);
+  nameFeedback.classList.toggle('opacity-100', !!v);
+});
+nameInput.addEventListener('keypress', e => { if (e.key === 'Enter' && !startBtn.disabled) startBtn.click(); });
+
+startBtn.addEventListener('click', () => {
+  const v = nameInput.value.trim();
+  if (!v) return;
+  S.name = v;
+  document.getElementById('dashName').textContent = S.name;
+  updateXPBar();
+  goTab('home');
+});
+
+// ── DASHBOARD ──────────────────────────────────────────────────
+function updateXPBar() {
+  const goal = 15, pct = Math.min((S.xp / goal) * 100, 100);
+  document.getElementById('xpDisplay').textContent = `${Math.min(S.xp, goal)}/${goal} XP`;
+  document.getElementById('xpBar').style.width = pct + '%';
+}
+
+// ── OPEN LESSON ────────────────────────────────────────────────
+function openLesson(type) {
+  const lesson = LESSONS[type];
+  if (!lesson) return;
+  S.lessonType = type;
+  S.steps = lesson.steps;
+  S.stepIdx = 0;
+  S.correct = 0;
+  S.placed = [];
+  S.startTime = Date.now();
+  S.recapItems = [];
+  document.getElementById('lessonTitle').textContent = lesson.title;
+  document.getElementById('lessonLevelLabel').textContent = lesson.level;
+  loadStep();
+  showScreen('screen-lesson');
+}
+
+// ── LOAD STEP ──────────────────────────────────────────────────
+function loadStep() {
+  const step = S.steps[S.stepIdx];
+  const pct  = (S.stepIdx / S.steps.length) * 100;
+  document.getElementById('lessonProgBar').style.width = pct + '%';
+  document.getElementById('lessonStepLabel').textContent = `${S.stepIdx + 1}/${S.steps.length}`;
+  document.getElementById('promptText').textContent = step.prompt;
+
+  // reset
+  S.placed = [];
+  renderSentence();
+  hideFeedback();
+
+  const checkBtn = document.getElementById('checkBtn');
+  checkBtn.disabled = true;
+  checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+  // Build blocks (shuffled)
+  const grid = document.getElementById('blocksGrid');
+  grid.innerHTML = '';
+  [...step.bank].sort(() => Math.random() - 0.5).forEach(w => {
+    const btn = document.createElement('button');
+    btn.dataset.k = w.k;
+    btn.className = 'bg-surface-container-lowest border border-outline-variant px-md py-sm rounded-xl hover:bg-surface-container-low hover:border-primary transition-all duration-200 active:scale-95 flex flex-col items-center justify-center group min-h-[68px]';
+    btn.innerHTML = `
+      <span class="text-[11px] font-label-md text-outline/70 italic leading-tight">${w.r || ''}</span>
+      <span class="text-[26px] font-hangul-display text-primary leading-tight group-hover:scale-110 transition-transform">${w.k}</span>
+      <span class="text-[12px] font-label-md text-outline group-hover:text-primary-container leading-tight">${w.e}</span>`;
+    btn.onclick = () => addBlock(w.k, btn);
+    grid.appendChild(btn);
+  });
+}
+
+// ── SENTENCE PLAYGROUND (SLOT-BASED SCORING GAME) ────────────────
+// Each round asks for a sequence of grammar roles (e.g. subject -> noun -> verb).
+// Tapping a word of the correct role scores points and advances to the next slot;
+// once the round's roles are all filled, a new round starts automatically.
+const builderState = {
+  placed: [],      // word objects chosen so far this round
+  template: [],    // role sequence for the current round, e.g. ['subject','noun','verb']
+  slotIdx: 0,
+  score: 0,
+  round: 1,
+};
+
+function openBuilder() {
+  builderState.score = 0;
+  builderState.round = 1;
+  startBuilderRound();
+  showScreen('screen-builder');
+}
+
+function startBuilderRound() {
+  builderState.placed = [];
+  builderState.slotIdx = 0;
+  builderState.template = ROUND_TEMPLATES[Math.floor(Math.random() * ROUND_TEMPLATES.length)];
+  document.getElementById('builderRoundLabel').textContent = `Round ${builderState.round}`;
+  updateBuilderRoleChip();
+  renderBuilderGrid();
+  renderBuilderSentence();
+}
+
+function clearBuilder() {
+  startBuilderRound();
+}
+
+function updateBuilderRoleChip() {
+  const role = builderState.template[builderState.slotIdx];
+  const info = ROLE_LABELS[role];
+  document.getElementById('builderRoleIcon').textContent = info.icon;
+  document.getElementById('builderRoleLabel').textContent = `Pick a ${info.en.toUpperCase()} (${info.ko})`;
+  document.getElementById('builderScore').textContent = builderState.score;
+}
+
+function renderBuilderGrid() {
+  const grid = document.getElementById('builderGrid');
+  grid.innerHTML = '';
+  const targetRole = builderState.template[builderState.slotIdx];
+  WORD_POOL.filter(w => w.type !== 'extra').forEach(w => {
+    const isMatch = w.type === targetRole;
+    const btn = document.createElement('button');
+    btn.className = isMatch
+      ? 'bg-primary-container/10 border-2 border-primary px-md py-sm rounded-xl hover:bg-primary-container/20 transition-all duration-200 active:scale-95 flex flex-col items-center justify-center group min-h-[68px] shadow-sm'
+      : 'bg-surface-container-lowest border border-outline-variant px-md py-sm rounded-xl opacity-50 hover:opacity-80 transition-all duration-200 active:scale-95 flex flex-col items-center justify-center group min-h-[68px]';
+    btn.innerHTML = `
+      <span class="text-[11px] font-label-md text-outline/70 italic leading-tight">${w.r}</span>
+      <span class="text-[24px] font-hangul-display text-primary leading-tight group-hover:scale-110 transition-transform">${w.k}</span>
+      <span class="text-[12px] font-label-md text-outline group-hover:text-primary-container leading-tight">${w.e}</span>`;
+    btn.onclick = () => tryBuilderWord(w, isMatch);
+    grid.appendChild(btn);
+  });
+}
+
+function tryBuilderWord(w, isMatch) {
+  if (!isMatch) {
+    const role = ROLE_LABELS[builderState.template[builderState.slotIdx]];
+    showToast(`Try a ${role.en} word (${role.ko}) 🤔`);
+    return;
+  }
+  builderState.placed.push(w);
+  builderState.score += 10;
+  builderState.slotIdx++;
+  renderBuilderSentence();
+
+  if (builderState.slotIdx >= builderState.template.length) {
+    // Round complete!
+    document.getElementById('builderScore').textContent = builderState.score;
+    showToast(`Sentence complete! +${builderState.template.length * 10} pts 🎉`);
+    setTimeout(() => {
+      builderState.round++;
+      startBuilderRound();
+    }, 1300);
+  } else {
+    updateBuilderRoleChip();
+    renderBuilderGrid();
+  }
+}
+
+function removeBuilderChip(idx) {
+  // Removing mid-round resets the round to keep slot order consistent
+  startBuilderRound();
+}
+
+function renderBuilderSentence() {
+  const preview = document.getElementById('builderSentencePreview');
+  const romEl = document.getElementById('builderRomanization');
+  const transEl = document.getElementById('builderTranslation');
+
+  if (builderState.placed.length === 0) {
+    preview.innerHTML = '<p class="text-on-surface-variant italic font-body-md text-body-md opacity-40">Build your sentence step by step...</p>';
+    romEl.textContent = '—';
+    transEl.textContent = 'Build a sentence to see its meaning here.';
+    return;
+  }
+
+  preview.innerHTML = builderState.placed.map((w, i) => `
+    <div class="bg-primary text-on-primary px-4 py-1.5 rounded-full flex flex-col items-center leading-tight chip-anim">
+      <span class="text-[10px] opacity-70 italic">${w.r}</span>
+      <span class="font-hangul-display text-[18px]">${w.k}</span>
+    </div>`).join('');
+
+  romEl.textContent = builderState.placed.map(w => w.r).join(' · ');
+  transEl.textContent = builderState.placed.map(w => w.e).join(' ');
+}
+
+function addBlock(kor, btn) {
+  if (document.getElementById('feedbackSection').classList.contains('feedback-visible') &&
+      document.getElementById('feedbackCard').classList.contains('border-green-200')) return;
+  S.placed.push(kor);
+  btn.classList.add('opacity-30', 'pointer-events-none');
+  renderSentence();
+  const checkBtn = document.getElementById('checkBtn');
+  checkBtn.disabled = false;
+  checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+}
+
+function renderSentence() {
+  const preview = document.getElementById('sentencePreview');
+  if (S.placed.length === 0) {
+    preview.innerHTML = '<p class="text-on-surface-variant italic font-body-lg text-body-lg opacity-40" id="placeholderText">Tap words to build a sentence...</p>';
+    return;
+  }
+  const bank = (S.steps[S.stepIdx] && S.steps[S.stepIdx].bank) || [];
+  const findR = k => (bank.find(w => w.k === k) || {}).r || '';
+  preview.innerHTML = S.placed.map((k, i) => `
+    <div class="bg-primary text-on-primary px-4 py-1.5 rounded-full cursor-pointer hover:bg-on-primary-fixed-variant transition-all duration-200 chip-anim flex flex-col items-center leading-tight"
+         onclick="removeChip(${i})">
+      <span class="text-[10px] opacity-70 italic">${findR(k)}</span>
+      <span class="font-hangul-display text-[18px] flex items-center gap-1.5">${k}<span class="material-symbols-outlined text-[16px] opacity-60">close</span></span>
+    </div>`).join('');
+}
+
+function removeChip(idx) {
+  const removed = S.placed[idx];
+  S.placed.splice(idx, 1);
+  renderSentence();
+  // re-enable block btn
+  document.querySelectorAll('#blocksGrid button').forEach(b => {
+    if (b.dataset.k === removed && b.classList.contains('pointer-events-none')) {
+      const stillIn = S.placed.filter(k => k === removed).length;
+      if (stillIn === 0) b.classList.remove('opacity-30', 'pointer-events-none');
+    }
+  });
+  if (S.placed.length === 0) {
+    const checkBtn = document.getElementById('checkBtn');
+    checkBtn.disabled = true;
+    checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+  }
+}
+
+// ── CHECK ANSWER ───────────────────────────────────────────────
+function checkAnswer() {
+  if (S.placed.length === 0) return;
+  const step = S.steps[S.stepIdx];
+  const isCorrect = JSON.stringify(S.placed) === JSON.stringify(step.answer);
+  S.recapItems.push({ eng: step.prompt, kor: step.answer.join(' ') });
+
+  if (isCorrect) {
+    showFeedback(true, '✓ Correct!  ' + step.answer.join(' '));
+    S.correct++;
+    setTimeout(nextStep, 900);
+  } else {
+    showFeedback(false, '✗ Not quite. Correct: ' + step.answer.join(' '));
+    setTimeout(() => {
+      hideFeedback();
+      S.placed = [];
+      renderSentence();
+      document.querySelectorAll('#blocksGrid button').forEach(b => b.classList.remove('opacity-30','pointer-events-none'));
+      const checkBtn = document.getElementById('checkBtn');
+      checkBtn.disabled = true;
+      checkBtn.classList.add('opacity-50','cursor-not-allowed');
+    }, 1600);
+  }
+}
+
+function showFeedback(correct, msg) {
+  const sec  = document.getElementById('feedbackSection');
+  const card = document.getElementById('feedbackCard');
+  const icon = document.getElementById('feedbackIcon');
+  const text = document.getElementById('feedbackText');
+  card.className = correct
+    ? 'rounded-xl p-md border border-green-200 bg-green-50 flex items-center gap-sm'
+    : 'rounded-xl p-md border border-red-200 bg-red-50 flex items-center gap-sm';
+  icon.textContent = correct ? 'check_circle' : 'cancel';
+  icon.className = `material-symbols-outlined ${correct ? 'text-green-600' : 'text-red-500'}`;
+  text.className = `font-body-md text-body-md font-semibold ${correct ? 'text-green-700' : 'text-red-600'}`;
+  text.textContent = msg;
+  sec.classList.add('feedback-visible');
+}
+function hideFeedback() {
+  document.getElementById('feedbackSection').classList.remove('feedback-visible');
+}
+
+// ── NEXT STEP / FINISH ─────────────────────────────────────────
+function nextStep() {
+  S.stepIdx++;
+  if (S.stepIdx >= S.steps.length) finishLesson();
+  else loadStep();
+}
+
+function finishLesson() {
+  document.getElementById('lessonProgBar').style.width = '100%';
+  const elapsed = Math.round((Date.now() - S.startTime) / 1000);
+  const mins = Math.floor(elapsed / 60), secs = elapsed % 60;
+  const accuracy = Math.round((S.correct / S.steps.length) * 100);
+  const xpEarned = Math.round(accuracy * 0.2) + 5;
+
+  S.xp += xpEarned;
+  updateXPBar();
+
+  document.getElementById('finalAccuracy').textContent = accuracy + '%';
+  document.getElementById('finalTime').textContent     = `${mins}:${secs.toString().padStart(2,'0')}`;
+  document.getElementById('finalXP').textContent       = '+' + xpEarned + ' XP';
+
+  // Recap
+  const list = document.getElementById('recapList');
+  list.innerHTML = '';
+  S.recapItems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'bento-card p-md rounded-lg flex flex-col gap-xs';
+    div.innerHTML = `
+      <div class="flex justify-between items-start">
+        <p class="font-body-lg text-body-lg text-on-surface font-semibold">${item.eng}</p>
+        <span class="material-symbols-outlined text-outline text-sm">volume_up</span>
+      </div>
+      <p class="text-lg text-primary font-semibold tracking-wide">${item.kor}</p>`;
+    list.appendChild(div);
+  });
+
+  document.getElementById('xpCompFill').style.width = '0%';
+  setTimeout(() => {
+    document.getElementById('xpCompFill').style.width = Math.min((xpEarned / 15) * 100, 100) + '%';
+  }, 600);
+
+  showScreen('screen-complete');
+  launchConfetti();
+}
+
+function replayLesson() { openLesson(S.lessonType); }
+
+// ── CONFETTI ───────────────────────────────────────────────────
+function launchConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.className = 'confetti-canvas';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+  window.addEventListener('resize', resize); resize();
+
+  const colors = ['#2563eb','#60a5fa','#93c5fd','#dbeafe','#004ac6'];
+  let particles = Array.from({length:80}, () => ({
+    x: Math.random() * canvas.width, y: -20,
+    size: Math.random() * 8 + 4,
+    speedY: Math.random() * 3 + 2,
+    speedX: (Math.random() - 0.5) * 2,
+    rotation: Math.random() * 360,
+    color: colors[Math.floor(Math.random() * colors.length)]
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p) => {
+      p.y += p.speedY; p.x += p.speedX; p.rotation += 2;
+      ctx.fillStyle = p.color;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      ctx.restore();
+    });
+    particles = particles.filter(p => p.y < canvas.height);
+    if (particles.length > 0) requestAnimationFrame(animate);
+    else { canvas.remove(); window.removeEventListener('resize', resize); }
+  }
+  animate();
+}
+</script>
+</body>
+</html>

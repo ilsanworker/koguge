@@ -8,6 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link rel="manifest" href="/manifest.json">
+<script>
+(function () {
+  const isPWA =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true; // iOS 대응
+
+  if (isPWA && location.pathname !== '/main.html') {
+    location.replace('/main.html');
+  }
+})();
+</script>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
